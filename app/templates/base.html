@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title> Research4Realtors </title>
+        <link rel="stylesheet" href="https://unpkg.com/picnic">
+    </head>
+
+    <body>
+        <h1> Dashboard </h1>
+
+        <ul>
+            {% for tweet in tweets %}
+            <li> {tweet.timestamp} --- {tweet.tweet} --- Tweeted by: {tweet.realname} </li>
+            {% endfor %}
+        </ul>
+
+    </body>
+</html>
