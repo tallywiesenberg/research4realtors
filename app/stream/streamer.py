@@ -1,7 +1,6 @@
 import tweepy
 
-import ..model
-from ..model import Tweet, db, migrate
+from app.model import Tweets, db, migrate
 
 class MyStreamListener(tweepy.StreamListener):
     def __init__(self, api):
@@ -16,24 +15,26 @@ class MyStreamListener(tweepy.StreamListener):
                 try:
                     try:
                         tweet = Tweets(id=status.id, tweet=status.extended_tweet['full_text'],
+                                    username=status.user.screen_name,
                                     realname=status.user.name,
                                     timestamp=status.created_at,
                                     longitude=sum([pair[0] for pair in status.place.bounding_box.coordinates[0]])/4,
                                     latitude=sum([pair[1] for pair in status.place.bounding_box.coordinates[0]])/4)
-                        db.add(tweet)
-                        db.commit()
+                        db.session.add(tweet)
+                        db.session.commit()
                         print(status.extended_tweet['full_text'], status.user.location, status.place.name)
                     except AttributeError as e:
                         tweet = Tweets(id=status.id, tweet=status.text,
+                                    username=status.user.screen_name,
                                     realname=status.user.name,
                                     timestamp=status.created_at,
                                     longitude=sum([pair[0] for pair in status.place.bounding_box.coordinates[0]])/4,
                                     latitude=sum([pair[1] for pair in status.place.bounding_box.coordinates[0]])/4)
-                        db.add(tweet)
-                        db.commit()
+                        db.session.add(tweet)
+                        db.session.commit()
                         print(status.text, status.user.location, status.place.name)
             #if error occurs
                 except Exception as e:
                     print(e)
-                    db.rollback()
+                    db.session.rollback()
                     pass

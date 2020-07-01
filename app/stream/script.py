@@ -1,11 +1,11 @@
 import tweepy
 
-import ..auth
-from ..auth import api, Auth
-import streamer
-from streamer import MyStreamListener
+from app.model import db
+from app.stream.auth import api, Auth
+import app.stream.streamer
+from app.stream.streamer import MyStreamListener
 
-streamer = tweepy.Stream(auth=Auth, listener=MyStreamListener)
+streamer = tweepy.Stream(auth=Auth, listener=MyStreamListener(api=api))
 
 hashtags = ['#realestate', '#realty', '#newhome', '#househunting', '#mortgage', '#foreclosure', '#selling', '#listing',
             '#justlisted', '#openhouse', '#offmarketlisting', '#newlisting', '#homesale', '#homeforsale', '#starterhome', '#starterhome',
@@ -13,4 +13,3 @@ hashtags = ['#realestate', '#realty', '#newhome', '#househunting', '#mortgage', 
             '#frederickmd']
 
 streamer.filter(track=hashtags)
-    
