@@ -1,2 +1,2 @@
-web: gunicorn app:app
+web: gunicorn app:app.server
 worker: python -m app.stream.script
