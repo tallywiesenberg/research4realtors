@@ -7,10 +7,24 @@ class MyStreamListener(tweepy.StreamListener):
         #Set API
         self.api = api
     def on_status(self, status):
-        # Exclude retweets
-        if 'RT @' not in status.text:
-            # Choose only geotagged tweets in United States
-            if (status.place != None) and (status.place.country_code == 'US'):
+        # Exclude retweets and Tweets w/o geotag
+        if ('RT @' not in status.text) and (status.place != None) and (status.place.country_code == 'US'):
+            # Choose only geotagged tweets in Frederick County, MD
+            longitude = sum([pair[0] for pair in status.place.bounding_box.coordinates[0]])/4
+            latitude = sum([pair[1] for pair in status.place.bounding_box.coordinates[0]])/4
+            #Frederick County, MD bounding box
+            bounding_box = dict(
+                upper_right_latitude = 39.7366,
+                upper_right_longitude = -77.0961,
+                lower_left_latitude = 39.2133,
+                lower_left_longitude = -77.6713
+            )
+            #Locating within Frederick County, MD bounding box
+            if (
+            (longitude >= bounding_box['lower_left_longitude'])
+            and (longitude <= bounding_box['upper_right_longitude'])
+            and (latitude  >= bounding_box['lower_left_latitude'])
+            and (latitude  <= bounding_box['upper_right_latitude'])):
             #Try to write tweet information to db
                 try:
                     try:
