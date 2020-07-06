@@ -7,7 +7,7 @@ migrate = Migrate()
 class Tweets(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     tweet = db.Column(db.String(280), unique=True, nullable=False)
-    username = db.Column(db.String(55), unique=True, nullable=False)
+    username = db.Column(db.String(55), nullable=False)
     realname = db.Column(db.String(55))
     timestamp = db.Column(db.String(), nullable=False)
     longitude = db.Column(db.Float())
