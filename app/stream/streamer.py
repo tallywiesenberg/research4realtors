@@ -34,6 +34,8 @@ class MyStreamListener(tweepy.StreamListener):
                                     timestamp=status.created_at,
                                     longitude=sum([pair[0] for pair in status.place.bounding_box.coordinates[0]])/4,
                                     latitude=sum([pair[1] for pair in status.place.bounding_box.coordinates[0]])/4)
+                        with app.app_context():
+                            db.create_all()
                         db.session.add(tweet)
                         db.session.commit()
                         print(status.extended_tweet['full_text'], status.user.location, status.place.name)
@@ -44,6 +46,8 @@ class MyStreamListener(tweepy.StreamListener):
                                     timestamp=status.created_at,
                                     longitude=sum([pair[0] for pair in status.place.bounding_box.coordinates[0]])/4,
                                     latitude=sum([pair[1] for pair in status.place.bounding_box.coordinates[0]])/4)
+                        with app.app_context():
+                            db.create_all()
                         db.session.add(tweet)
                         db.session.commit()
                         print(status.text, status.user.location, status.place.name)
